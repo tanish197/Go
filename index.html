@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Go Conference Ticket Booking</title>
+    <style>
+		body {
+			background-color: #6FC3DF ;
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.container {
+			margin: 0 auto;
+			max-width: 800px;
+			padding: 20px;
+		}
+		
+		h1, h2 {
+			text-align: center;
+			color: white;
+		}
+		
+		form {
+			background-color: #ad7bdb;
+			border: 1px solid #23bdfa;
+			padding: 20px;
+		}
+		
+		input[type=text], input[type=email], input[type=number] {
+			display: block;
+			margin-bottom: 10px;
+			width: 100%;
+			padding: 10px;
+			border-radius: 5px;
+			box-sizing: border-box;
+		}
+		input[type="submit"] {
+			background-color: #ffc1ef;
+			color: white;
+			padding: 12px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		
+		input[type="submit"]:hover {
+			background-color: #FF00FF;
+		}
+		
+		.button {
+			background-color: #04AA6D;
+			border: none;
+			color: white;
+			padding: 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+		}
+		
+		  .button1 {
+			border-radius: 12px;
+		}
+	</style>
+  </head>
+  <body>
+    <!-- <h1 style="color: black;">Go Conference Ticket Booking</h1> -->
+    <p style="color:black"><b>Number of tickets available: </b><span id="remaining-tickets"><b>50</b></span></p>
+    <form method="POST" action="/" id="booking-form">
+      <div>
+        <label for="first-name"><b>First Name:</b></label>
+        <input type="text" id="first-name" name="first-name" required>
+      </div>
+      <div>
+        <label for="last-name"><b>Last Name:</b></label>
+        <input type="text" id="last-name" name="last-name" required>
+      </div>
+      <div>
+        <label for="email"><b>Email:</b></label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="ticket-number"><b>Number of Tickets:</b></label>
+        <input type="number" id="ticket-number" name="ticket-number" min="1" max="50" required>
+      </div>
+      <button class="button button1" type="submit"><i>Book Tickets</i></button>
+    </form>
+    <div id="message"></div>
+    <script>
+		// Get elements from the DOM
+const bookingForm = document.getElementById('booking-form');
+const remainingTickets = document.getElementById('remaining-tickets');
+const message = document.getElementById('message');
+
+// Set the initial number of tickets available
+let ticketsAvailable = 50;
+
+// Add an event listener for the form submission
+bookingForm.addEventListener('submit', (event) => {
+  event.preventDefault(); // prevent form submission
+
+  // Get the form data
+  const formData = new FormData(event.target);
+
+  // Get the number of tickets requested
+  const numberOfTickets = parseInt(formData.get('ticket-number'));
+
+  // Check if there are enough tickets available
+  if (numberOfTickets <= ticketsAvailable) {
+    // Subtract the number of tickets requested from the available tickets
+    ticketsAvailable -= numberOfTickets;
+
+    // Update the remaining tickets count on the page
+    remainingTickets.textContent = ticketsAvailable;
+
+    // Display a success message
+    message.style.color = 'red';
+	message.style.fontWeight = 'bold';
+    message.textContent = `Tickets booked successfully for ${formData.get('first-name')} ${formData.get('last-name')}.`;
+
+    // Reset the form
+    bookingForm.reset();
+  } else {
+    // Display an error message
+    message.style.color = 'black';
+	message.style.fontWeight = 'bold';
+    message.textContent = `Sorry, only ${ticketsAvailable} tickets are available.`;
+  }
+});
+	</script>
+  </body>
+</html>
